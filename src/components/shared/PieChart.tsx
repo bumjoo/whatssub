@@ -22,7 +22,7 @@ export interface IProduct {
 };
 
 const Container = styled.View`
-  background-color: yellow;
+  background-color: white;
   align-items: center;
   justify-content: center;
 `;

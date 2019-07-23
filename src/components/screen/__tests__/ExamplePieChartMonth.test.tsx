@@ -3,32 +3,28 @@ import * as React from 'react';
 import ExamplePieChartMonth from '../ExamplePieChartMonth';
 
 import renderer from 'react-test-renderer';
+import { ThemeProvider } from 'styled-components/native';
 import { render, fireEvent, act, RenderResult } from '@testing-library/react-native';
 
-const props = {
+import { createTheme, ThemeType } from '../../../theme';
+
+const createTestProps = (obj: object) => ({
   navigation: {
-    goBack: jest.fn(),
+    navigate: jest.fn(),
   },
-};
+  ...obj,
+});
+const props: any = createTestProps({});
+const component = (
+  <ThemeProvider theme={createTheme(ThemeType.LIGHT)}>
+    <ExamplePieChartMonth {...props} />
+  </ThemeProvider>
+);
 
 describe('[ExamplePieChartMonth]', () => {
   it('renders without crashing', () => {
-    const rendered: renderer.ReactTestRendererJSON = renderer.create(<ExamplePieChartMonth />).toJSON();
+    const rendered = renderer.create(component).toJSON();
     expect(rendered).toMatchSnapshot();
     expect(rendered).toBeTruthy();
-  });
-});
-
-describe('[ExamplePieChartMonth] Interaction', () => {
-  const component: any = <ExamplePieChartMonth {...props} />;
-  let testing: any;
-
-  beforeEach(() => {
-    testing = render(component);
-  });
-
-  it('should render [Text] with value "myText"', () => {
-    const textInstance: renderer.ReactTestInstance = testing.getByTestId('myText');
-    expect(textInstance.props.children).toEqual('dooboolab');
   });
 });
